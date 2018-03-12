@@ -1,0 +1,13 @@
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\obj\Debug\TheAionProject.S1_Starter.csprojResolveAssemblyReference.cache
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\bin\Debug\TheAionProject.exe.config
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\bin\Debug\TheAionProject.exe
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\bin\Debug\TheAionProject.pdb
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\obj\Debug\TheAionProject.exe
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\obj\Debug\TheAionProject.pdb
+C:\Users\velisj\Git\NMC\CIT195\Demo_TheAionProject\TheAionProject.S1_Starter\obj\Debug\TheAionProject.S1_Starter.csproj.CoreCompileInputs.cache
+E:\Aion Project\Sprint One\Demo_TheAionProject.S1_Starter\Demo_TheAionProject.S1_Starter\TheAionProject.S1_Starter\obj\Debug\TheAionProject.S1_Starter.csprojResolveAssemblyReference.cache
+E:\Aion Project\Sprint One\Demo_TheAionProject.S1_Starter\Demo_TheAionProject.S1_Starter\TheAionProject.S1_Starter\bin\Debug\TheZlandProject.exe.config
+E:\Aion Project\Sprint One\Demo_TheAionProject.S1_Starter\Demo_TheAionProject.S1_Starter\TheAionProject.S1_Starter\bin\Debug\TheZlandProject.exe
+E:\Aion Project\Sprint One\Demo_TheAionProject.S1_Starter\Demo_TheAionProject.S1_Starter\TheAionProject.S1_Starter\bin\Debug\TheZlandProject.pdb
+E:\Aion Project\Sprint One\Demo_TheAionProject.S1_Starter\Demo_TheAionProject.S1_Starter\TheAionProject.S1_Starter\obj\Debug\TheZlandProject.exe
+E:\Aion Project\Sprint One\Demo_TheAionProject.S1_Starter\Demo_TheAionProject.S1_Starter\TheAionProject.S1_Starter\obj\Debug\TheZlandProject.pdb
