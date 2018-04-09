@@ -18,14 +18,21 @@ namespace TheZlandProject.LocationsAndObjects
                 {
                     Location = Area.Desert,
                     IsAccessible = true,
-                    Description = "A hellish desert"                    
+                    Description = "A gust of wind carries dirt ominously across the landscape \n" +
+                                  "You hear a groan in the distance, even in the most desolate\n" +
+                                  "of landscapes there is no escape from the menace that is   \n" +
+                                  "the Undead. ",
                 },
 
                 new GameLocation
                 {
                     Location = Area.Hope,
                     IsAccessible = true,
-                    Description = "The city of Hope"
+                    Description = "A sign hangs on the outer wall of what used to be 'The City of Hope' \n" +
+                                  "The City was founded when the dead started turning, at first it was a\n" + 
+                                  "source of refuge during a dark and troubling time. \n" +
+                                  "\n\t However, the only souls it offers refuge now are the damned.",
+
                 },
 
                 new GameLocation

@@ -50,9 +50,14 @@
     <Compile Include="ConsoleUtilities\ConsoleWindowControl.cs" />
     <Compile Include="ConsoleUtilities\ConsoleWindowHelper.cs" />
     <Compile Include="Controllers\Controller.cs" />
+    <Compile Include="LocationsAndObjects\GameObject.cs" />
+    <Compile Include="LocationsAndObjects\ListOfGameObjects.cs" />
     <Compile Include="LocationsAndObjects\ListOfLocations.cs" />
+    <Compile Include="LocationsAndObjects\Loot.cs" />
+    <Compile Include="LocationsAndObjects\StoryItem.cs" />
+    <Compile Include="LocationsAndObjects\Weapon.cs" />
     <Compile Include="Models\Character.cs" />
-    <Compile Include="Models\GameLocation.cs" />
+    <Compile Include="LocationsAndObjects\GameLocation.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerAction.cs" />

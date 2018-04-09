@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheZlandProject.LocationsAndObjects;
 
 namespace TheAionProject
 {
@@ -25,11 +26,19 @@ namespace TheAionProject
         #region FIELDS
         private string _homeTown;
         private bool isAlive;
+        private List<TheZlandProject.GameObject> _inventory;
         private PersonalityType _personality;
         #endregion
 
 
         #region PROPERTIES
+
+        public List<TheZlandProject.GameObject> Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
+        }
+
         public string HomeTown
         {
             get { return _homeTown; }

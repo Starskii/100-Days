@@ -92,6 +92,8 @@ namespace TheAionProject
             List<GameLocation> _listOfLocation = new List<GameLocation>();
             ListOfLocations Instantiate = new ListOfLocations();
             _listOfLocation = Instantiate.IntitializeGameLocationList();
+            List<TheZlandProject.GameObject> listOfAllGameObjects = new List<TheZlandProject.GameObject>();
+            listOfAllGameObjects = ListOfGameObjects.IntitializeGameObjectList();
 
             //
             // prepare game play screen
@@ -132,6 +134,32 @@ namespace TheAionProject
                     case PlayerAction.EditPlayer:
                         _playerCharacter = _gameConsoleView.DisplayEditPlayer(_playerCharacter);
                         travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.MainMenu);
+                        break;
+
+                    case PlayerAction.LookAround:
+                        _playerCharacter = _gameConsoleView.LookAround(_playerCharacter, listOfAllGameObjects);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.LookAround);
+                        break;
+
+                    case PlayerAction.PickUpItem:
+                        _playerCharacter = _gameConsoleView.PickUpItem(_playerCharacter, listOfAllGameObjects);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.LookAround);
+
+                        break;
+
+                    case PlayerAction.PutDownItem:
+                        _playerCharacter = _gameConsoleView.PutDownItem(_playerCharacter, listOfAllGameObjects);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.LookAround);
+                        break;
+
+                    case PlayerAction.DisplayAllObjects:
+                        _gameConsoleView.DisplayAllGameObjects(listOfAllGameObjects);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
+                        break;
+
+                    case PlayerAction.DisplayAllLocations:
+                        _gameConsoleView.DisplayAllLocations(_listOfLocation);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
                         break;
 
                     case PlayerAction.Return:

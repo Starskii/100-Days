@@ -27,6 +27,9 @@ namespace TheAionProject
         EditAge,
         EditHomeTown,
 
+        DisplayAllObjects,
+        DisplayAllLocations,
+
         PlayerInventory,
         PlayerWallet,
         ListSpaceTimeLocations,

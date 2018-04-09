@@ -31,6 +31,28 @@ namespace TheAionProject
                 },
         };
 
+        public static Menu ReturnOnly = new Menu()
+        {
+            MenuName = "ReturnMenu",
+            MenuTitle = "Display Data",
+            MenuChoices = new Dictionary<char, PlayerAction>()
+            {
+                {'1', PlayerAction.Return }
+            }
+        };
+
+        public static Menu LookAround = new Menu()
+        {
+            MenuName = "LookAround",
+            MenuTitle = "Look Around",
+            MenuChoices = new Dictionary<char, PlayerAction>()
+            {
+                { '1', PlayerAction.PickUpItem},
+                { '2', PlayerAction.PutDownItem},
+                { '3', PlayerAction.Return}
+            }
+        };
+
         public static Menu MainMenu = new Menu()
         {
             MenuName = "MainMenu",
@@ -40,6 +62,9 @@ namespace TheAionProject
                     { '1', PlayerAction.PlayerInfo },
                     {'2', PlayerAction.EditPlayer },
                     {'3', PlayerAction.Travel },
+                    {'4', PlayerAction.LookAround },
+                    {'5', PlayerAction.DisplayAllLocations },
+                    {'6', PlayerAction.DisplayAllObjects },
                     { '9', PlayerAction.Exit }
                 },
         };

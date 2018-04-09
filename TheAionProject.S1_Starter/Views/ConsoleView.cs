@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheZlandProject.LocationsAndObjects;
 using TheZlandProject.Models;
 
 namespace TheAionProject
@@ -516,6 +517,21 @@ namespace TheAionProject
             DisplayGamePlayScreen("Player Information", Text.TravelerInfo(_gameTraveler), ActionMenu.PlayerInformation, "");
         }
 
+        public void DisplayAllGameObjects(List<TheZlandProject.GameObject> listOfGameObjects)
+        {
+            DisplayGamePlayScreen("Display All Game Objects: ", DisplayListOfObjects(listOfGameObjects), ActionMenu.ReturnOnly, "");
+        }
+
+        public void DisplayAllLocations(List<GameLocation> ListOfLocations)
+        {
+            string TravelBoxText = "";
+            foreach (GameLocation item in ListOfLocations)
+            {
+                TravelBoxText += (item.Location.ToString() + "\n");
+            }
+            DisplayGamePlayScreen("All Locations: ", TravelBoxText, ActionMenu.ReturnOnly, "");
+        }
+
         public Player DisplayTravelMenu(Player player, List<GameLocation> places)
         {
 
@@ -557,6 +573,174 @@ namespace TheAionProject
             return player;            
 
         }
+
+        public string DisplayListOfObjectsInArea(Player player, List<TheZlandProject.GameObject> listOfAllGameObjects)
+        {
+            string messageBox = "";
+
+            List<TheZlandProject.GameObject> listOfGameObjectsInArea = new List<TheZlandProject.GameObject>();
+
+
+            messageBox += " ~~~~~ Weapons ~~~~~";
+            foreach (TheZlandProject.GameObject item in listOfAllGameObjects)
+            {
+                if (item is Weapon && item.Location == player.LocationValue)
+                {
+                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                }
+            }
+
+            messageBox += "\n ~~~~~ Loot ~~~~~";
+            foreach (TheZlandProject.GameObject item in listOfAllGameObjects)
+            {
+                if (item is Loot && item.Location == player.LocationValue)
+                {
+                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                }
+
+            }
+
+            messageBox += "\n ~~~~~ Story Items ~~~~~";
+            foreach (TheZlandProject.GameObject item in listOfAllGameObjects)
+            {
+                if (item is StoryItem && item.Location == player.LocationValue)
+                {
+                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                }
+            }
+
+            return messageBox;
+        }
+
+        public string DisplayListOfObjects(List<TheZlandProject.GameObject> listOfAllGameObjects)
+        {
+            string messageBox = "";
+
+            List<TheZlandProject.GameObject> listOfGameObjectsInArea = new List<TheZlandProject.GameObject>();
+
+
+            messageBox += " ~~~~~ Weapons ~~~~~";
+            foreach (TheZlandProject.GameObject item in listOfAllGameObjects)
+            {
+                if (item is Weapon)
+                {
+                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                }
+            }
+
+            messageBox += "\n ~~~~~ Loot ~~~~~";
+            foreach (TheZlandProject.GameObject item in listOfAllGameObjects)
+            {
+                if (item is Loot)
+                {
+                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                }
+
+            }
+
+            messageBox += "\n ~~~~~ Story Items ~~~~~";
+            foreach (TheZlandProject.GameObject item in listOfAllGameObjects)
+            {
+                if (item is StoryItem)
+                {
+                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                }
+            }
+
+            return messageBox;
+        }
+
+        public Player PutDownItem(Player player, List<TheZlandProject.GameObject> ListOfInGameObjects)
+        {
+            string playerInput = "";
+            List<int> validID = new List<int>();
+
+            foreach (var item in ListOfInGameObjects)
+            {
+                validID.Add(item.ID);
+            }
+
+            bool validChoice = false;
+
+            while (!validChoice)
+            {
+                DisplayInputBoxPrompt("Enter the ID of the item you would like to put down: ");
+
+                playerInput = Console.ReadLine();
+
+                foreach (var item in validID)
+                {
+                    if (item.ToString() == playerInput)
+                    {
+                        validChoice = true;
+                    }
+                }
+
+            }
+
+
+
+            foreach (var item in ListOfInGameObjects)
+            {
+                if (playerInput == item.ID.ToString())
+                {
+                    item.IsInInventory = false;
+                }
+            }
+
+           
+
+            return player;
+        }
+
+        public Player PickUpItem(Player player, List<TheZlandProject.GameObject> ListOfInGameObjects)
+        {
+            string playerInput = "";
+            List<int> validID = new List<int>();
+
+            foreach (var item in ListOfInGameObjects)
+            {
+                validID.Add(item.ID);
+            }
+
+            bool validChoice = false;
+
+            while (!validChoice)
+            {
+                DisplayInputBoxPrompt("Enter the ID of the item you would like to pick up: ");
+
+                playerInput = Console.ReadLine();
+
+                foreach (var item in validID)
+                {
+                    if (item.ToString() == playerInput)
+                    {
+                        validChoice = true;
+                    }
+                }
+
+            }
+
+
+
+            foreach (var item in ListOfInGameObjects)
+            {
+                if (playerInput == item.ID.ToString())
+                {
+                    item.IsInInventory = true;
+                }
+            }
+
+            return player;
+        }
+
+        public Player LookAround(Player player, List<TheZlandProject.GameObject> ListOfInGameObjects)
+        {
+            DisplayGamePlayScreen("You look around " + player.LocationValue + ".", DisplayListOfObjectsInArea(player, ListOfInGameObjects), ActionMenu.LookAround, "");
+
+            return player;
+        }
+
 
         public Player DisplayEditPlayer(Player player)
         {
