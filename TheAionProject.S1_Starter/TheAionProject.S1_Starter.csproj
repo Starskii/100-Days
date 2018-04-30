@@ -58,6 +58,12 @@
     <Compile Include="LocationsAndObjects\Weapon.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="LocationsAndObjects\GameLocation.cs" />
+    <Compile Include="Models\Civilian.cs" />
+    <Compile Include="Models\Enemy.cs" />
+    <Compile Include="Models\IBattle.cs" />
+    <Compile Include="Models\ISpeak.cs" />
+    <Compile Include="Models\ListOfAllNPC.cs" />
+    <Compile Include="Models\Merchant.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerAction.cs" />

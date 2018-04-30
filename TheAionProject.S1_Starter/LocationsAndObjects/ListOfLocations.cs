@@ -29,7 +29,7 @@ namespace TheZlandProject.LocationsAndObjects
                     Location = Area.Hope,
                     IsAccessible = true,
                     Description = "A sign hangs on the outer wall of what used to be 'The City of Hope' \n" +
-                                  "The City was founded when the dead started turning, at first it was a\n" + 
+                                  "The City was founded when the dead started turning, at first it was a\n" +
                                   "source of refuge during a dark and troubling time. \n" +
                                   "\n\t However, the only souls it offers refuge now are the damned.",
 

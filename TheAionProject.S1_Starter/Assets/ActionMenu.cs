@@ -49,7 +49,8 @@ namespace TheAionProject
             {
                 { '1', PlayerAction.PickUpItem},
                 { '2', PlayerAction.PutDownItem},
-                { '3', PlayerAction.Return}
+                {'3', PlayerAction.LookAt },
+                { '7', PlayerAction.Return}
             }
         };
 
@@ -59,14 +60,39 @@ namespace TheAionProject
             MenuTitle = "Main Menu",
             MenuChoices = new Dictionary<char, PlayerAction>()
                 {
-                    { '1', PlayerAction.PlayerInfo },
-                    {'2', PlayerAction.EditPlayer },
-                    {'3', PlayerAction.Travel },
-                    {'4', PlayerAction.LookAround },
-                    {'5', PlayerAction.DisplayAllLocations },
-                    {'6', PlayerAction.DisplayAllObjects },
+
+                    {'1', PlayerAction.Act },
+                    {'2', PlayerAction.Options },
+                    {'7', PlayerAction.AdminMenu },
                     { '9', PlayerAction.Exit }
                 },
+        };
+
+        public static Menu OptionMenu = new Menu()
+        {
+            MenuName = "OptionMenu",
+            MenuTitle = "Option Menu",
+            MenuChoices = new Dictionary<char, PlayerAction>()
+                {
+
+                    {'1', PlayerAction.EditPlayer },
+                    {'2', PlayerAction.PlayerInfo },
+                    {'7', PlayerAction.Return }
+                },
+        };
+
+        public static Menu Act = new Menu()
+        {
+            MenuName = "Act",
+            MenuTitle = "Act",
+            MenuChoices = new Dictionary<char, PlayerAction>()
+            {
+                {'1', PlayerAction.LookAround },
+                {'2', PlayerAction.TalkTo },
+                {'3', PlayerAction.Travel },
+                {'4', PlayerAction.DisplayPlayerInventory },
+                {'7', PlayerAction.Return }
+            }
         };
 
         public static Menu EditPlayer = new Menu()
@@ -89,6 +115,32 @@ namespace TheAionProject
             MenuChoices = new Dictionary<char, PlayerAction>()
             {
                 {'2', PlayerAction.EditPlayer },
+                {'7', PlayerAction.Return }
+            },
+        };
+
+        public static Menu Shop = new Menu()
+        {
+            MenuName = "Shop",
+            MenuTitle = "Shop",
+            MenuChoices = new Dictionary<char, PlayerAction>()
+            {
+                {'1', PlayerAction.Trade },
+                {'2', PlayerAction.Heal },
+                {'7', PlayerAction.Return }
+            },
+        };
+
+        public static Menu AdminMenu = new Menu()
+        {
+            MenuName = "Admin",
+            MenuTitle = "Admin",
+            MenuChoices = new Dictionary<char, PlayerAction>()
+            {
+                {'1', PlayerAction.DisplayAllObjects },
+                {'2', PlayerAction.DisplayAllLocations },
+                {'3', PlayerAction.DisplayLocationsVisited },
+                {'4', PlayerAction.DisplayAllNPC },
                 {'7', PlayerAction.Return }
             },
         };

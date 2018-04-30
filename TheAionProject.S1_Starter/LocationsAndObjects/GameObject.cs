@@ -8,12 +8,20 @@ using TheZlandProject.Models;
 
 namespace TheZlandProject
 {
-    public abstract class GameObject
+    public class GameObject
     {
         private string _name;
         private Area _location;
         private int _id;
         private bool _isInInventory;
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
 
         public bool IsInInventory
         {

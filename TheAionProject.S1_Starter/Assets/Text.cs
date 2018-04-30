@@ -68,7 +68,7 @@ namespace TheAionProject
             return messageBoxText;
         }
 
-        public static string InitializeMissionGetTravelerName()
+        public static string InitializeMissionGetPlayerName()
         {
             string messageBoxText =
                 "Enter your name.\n" +
@@ -77,7 +77,7 @@ namespace TheAionProject
             return messageBoxText;
         }
 
-        public static string InitializeMissionGetTravelerAge(string name)
+        public static string InitializeMissionGetPlayerAge(string name)
         {
             string messageBoxText =
                 $"Very good then, we will call you {name}.\n" +
@@ -95,10 +95,10 @@ namespace TheAionProject
             return messageBoxText;
         }
 
-        public static string InitializeMissionGetTravelerRace(Player gameTraveler)
+        public static string InitializeMissionGetPlayerClass(Player player)
         {
             string messageBoxText =
-                $"{gameTraveler.Name}, Are you a Leader (better at speech), a Mercenary (better at combat) or a Scavenger (better loot)?\n" +
+                $"{player.Name}, Are you a Leader (better at speech), a Mercenary (better at combat) or a Scavenger (better loot)?\n" +
                 " \n" +
                 "Enter your class below.\n";
 
@@ -117,18 +117,18 @@ namespace TheAionProject
             return messageBoxText;
         }
 
-        public static string InitializeMissionEchoTravelerInfo(Player gameTraveler)
+        public static string InitializeMissionEchoPlayerInfo(Player player)
         {
             string messageBoxText =
-                $"Very good then {gameTraveler.Name}.\n" +
+                $"Very good then {player.Name}.\n" +
                 " \n" +
                 "It appears we have all the necessary data to begin your adventure. You will find it" +
                 " listed below.\n" +
                 " \n" +
-                $"\tPlayer Name: {gameTraveler.Name}\n" +
-                $"\tPlayer Age: {gameTraveler.Age}\n" +
-                $"\tPlayer Class: {gameTraveler.Class}\n" +
-                $"\tPlayer HomeTown: {gameTraveler.HomeTown}" +
+                $"\tPlayer Name: {player.Name}\n" +
+                $"\tPlayer Age: {player.Age}\n" +
+                $"\tPlayer Class: {player.Class}\n" +
+                $"\tPlayer HomeTown: {player.HomeTown}" +
                 " \n" +
                 "Press any key to begin your adventure.";
 
@@ -155,12 +155,14 @@ namespace TheAionProject
 
         #endregion
 
-        public static List<string> StatusBox(Player traveler)
+        public static List<string> StatusBox(Player player)
         {
             List<string> statusBoxText = new List<string>();
 
-            statusBoxText.Add($"Player's Age: {traveler.Age}\n");
-
+            statusBoxText.Add($"Player's Age: {player.Age}\n");
+            statusBoxText.Add($"Player's Experience Points: {player.Experience} \n");
+            statusBoxText.Add($"Player's Money: {player.Wallet} \n");
+            statusBoxText.Add($"Player's Health: {player.HealthValue} / {player.MaxHealthValue}");
             return statusBoxText;
         }
     }

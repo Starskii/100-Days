@@ -13,8 +13,17 @@ namespace TheAionProject
     {
         None,
         CharacterSetup,
+
+        Act,
+        Options,
+
         LookAround,
         LookAt,
+
+        TalkTo,
+        Trade,
+        Heal,
+
         PickUpItem,
         Scavenge,
         PutDownItem,
@@ -27,14 +36,16 @@ namespace TheAionProject
         EditAge,
         EditHomeTown,
 
+        DisplayPlayerInventory,
+
+        AdminMenu,
         DisplayAllObjects,
         DisplayAllLocations,
+        DisplayAllNPC,
+        DisplayLocationsVisited,
 
         PlayerInventory,
         PlayerWallet,
-        ListSpaceTimeLocations,
-        ListItems,
-        ListScavenge,
 
         Return,
         Exit

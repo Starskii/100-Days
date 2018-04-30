@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheZlandProject.LocationsAndObjects
+namespace TheZlandProject.Models
 {
-    class StoryItem : GameObject
+    interface ISpeak
     {
+        List<string> Messages { get; set; }
+
+        string Speak();
     }
 }

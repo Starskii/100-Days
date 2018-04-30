@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheZlandProject;
 using TheZlandProject.LocationsAndObjects;
 using TheZlandProject.Models;
+using System.Media;
 
 namespace TheAionProject
 {
@@ -17,7 +19,7 @@ namespace TheAionProject
 
         private enum ViewStatus
         {
-            TravelerInitialization,
+            PlayerInitialization,
             PlayingGame
         }
 
@@ -28,7 +30,7 @@ namespace TheAionProject
         //
         // declare game objects for the ConsoleView object to use
         //
-        Player _gameTraveler;
+        Player _player;
 
         ViewStatus _viewStatus;
 
@@ -43,11 +45,11 @@ namespace TheAionProject
         /// <summary>
         /// default constructor to create the console view objects
         /// </summary>
-        public ConsoleView(Player gameTraveler)
+        public ConsoleView(Player player)
         {
-            _gameTraveler = gameTraveler;
+            _player = player;
 
-            _viewStatus = ViewStatus.TravelerInitialization;
+            _viewStatus = ViewStatus.PlayerInitialization;
 
             InitializeDisplay();
         }
@@ -85,7 +87,7 @@ namespace TheAionProject
         /// </summary>
         public void GetContinueKey()
         {
-           Console.ReadKey();
+            Console.ReadKey();
         }
 
         /// <summary>
@@ -109,14 +111,14 @@ namespace TheAionProject
                 char keyPressed = keyPressedInfo.KeyChar;
 
 
-                    if (menu.MenuChoices.Keys.Contains(keyPressed))
-                    {
-                        chosenAction = menu.MenuChoices[keyPressed];
-                        allGood = true;
-                    }
-                    else
-                    {  }
+                if (menu.MenuChoices.Keys.Contains(keyPressed))
+                {
+                    chosenAction = menu.MenuChoices[keyPressed];
+                    allGood = true;
                 }
+                else
+                { }
+            }
 
             return chosenAction;
         }
@@ -188,10 +190,48 @@ namespace TheAionProject
         /// display splash screen
         /// </summary>
         /// <returns>player chooses to play</returns>
+        /// 
+
+        static void DisplayMainScreen(int lineNumber, ConsoleColor highlighterColor)
+        {
+            string[] menuStrings = new string[3];
+
+            menuStrings[0] = "  Start New";
+            menuStrings[1] = "  Load Old Save";
+            menuStrings[2] = "  Exit";
+
+            int currentPrintedLineNumber = -1;
+
+            foreach (string item in menuStrings)
+            {
+                Console.WriteLine();
+                currentPrintedLineNumber++;
+                if (currentPrintedLineNumber == lineNumber)
+                {
+                    Console.Write(" ");
+                    Console.ForegroundColor = highlighterColor;
+                    Console.Write(item);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine();
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine(item);
+                }
+            }
+        }
+        static int KeyUp(int lineNumber)
+        {
+            return lineNumber;
+        }
+        static int KeyDown(int lineNumber)
+        {
+            return lineNumber;
+        }
         public bool DisplaySplashScreen()
         {
             bool playing = true;
-            ConsoleKeyInfo keyPressed;
 
             Console.BackgroundColor = ConsoleTheme.SplashScreenBackgroundColor;
             Console.ForegroundColor = ConsoleTheme.SplashScreenForegroundColor;
@@ -200,27 +240,77 @@ namespace TheAionProject
 
 
             Console.SetCursorPosition(0, 10);
-            string tabSpace = new String(' ', 35);
-            Console.WriteLine(tabSpace + @"__________.__        100 Days       .___");
-            Console.WriteLine(tabSpace + @"\____    /|  |  _____     ____    __| _/");
-            Console.WriteLine(tabSpace + @"  /     / |  |  \__  \   /    \  / __ | ");
-            Console.WriteLine(tabSpace + @" /     /_ |  |__ / __ \_|   |  \/ /_/ | ");
-            Console.WriteLine(tabSpace + @"/_______ \|____/(____  /|___|  /\____ | ");
-            Console.WriteLine(tabSpace + @"        \/           \/      \/      \/ ");
+            string tabSpace = new String(' ', 45);
+
+            ConsoleColor highLighterColor = ConsoleColor.Yellow;
+
+            ConsoleKeyInfo KeyInformation;
+            int highlightedLine = 0;
+            bool splashScreen = true;
+            while (splashScreen)
+            {
+                if (highlightedLine >= 3)
+                    highlightedLine = 0;
+                else if (highlightedLine < 0)
+                    highlightedLine = 2;
 
 
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(tabSpace + @"__________.__        100 Days       .___");
+                Console.WriteLine(tabSpace + @"\____    /|  |  _____     ____    __| _/");
+                Console.WriteLine(tabSpace + @"  /     / |  |  \__  \   /    \  / __ | ");
+                Console.WriteLine(tabSpace + @" /     /_ |  |__ / __ \_|   |  \/ /_/ | ");
+                Console.WriteLine(tabSpace + @"/_______ \|____/(____  /|___|  /\____ | ");
+                Console.WriteLine(tabSpace + @"        \/           \/      \/      \/ ");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                DisplayMainScreen(highlightedLine, highLighterColor);
 
+                Console.WriteLine("\n\n\t\t Press the space bar to select an option...");
+                KeyInformation = Console.ReadKey(true);
+
+                Console.Beep(200,100);
+
+                switch (KeyInformation.KeyChar)
+                {
+                    case 'W':
+                    case 'w':
+                        highlightedLine--;
+                        highlightedLine = KeyUp(highlightedLine);
+                        break;
+                    case 'S':
+                    case 's':
+                        highlightedLine++;
+                        highlightedLine = KeyDown(highlightedLine);
+                        break;
+                    case ' ':
+                        if (highlightedLine == 2)
+                            Environment.Exit(0);
+
+                        splashScreen = false;
+                        break;
+                    default:
+                        break;
+                }
+
+                
+
+            }
+                
 
             Console.SetCursorPosition(80, 25);
-            Console.Write("Press any key to continue or Esc to exit.");
-            keyPressed = Console.ReadKey();
-            if (keyPressed.Key == ConsoleKey.Escape)
-            {
-                playing = false;
-            }
+            //Console.Write("Press any key to continue or Esc to exit.");
 
             return playing;
         }
+
+
 
         /// <summary>
         /// initialize the console window settings
@@ -370,7 +460,7 @@ namespace TheAionProject
                 //
                 int startingRow = ConsoleLayout.StatusBoxPositionTop + 3;
                 int row = startingRow;
-                foreach (string statusTextLine in Text.StatusBox(_gameTraveler))
+                foreach (string statusTextLine in Text.StatusBox(_player))
                 {
                     Console.SetCursorPosition(ConsoleLayout.StatusBoxPositionLeft + 3, row);
                     Console.Write(statusTextLine);
@@ -450,8 +540,8 @@ namespace TheAionProject
         /// <summary>
         /// get the player's initial information at the beginning of the game
         /// </summary>
-        /// <returns>traveler object with all properties updated</returns>
-        public Player GetInitialTravelerInfo()
+        /// <returns>player object with all properties updated</returns>
+        public Player GetInitialPlayerInfo()
         {
             Player player = new Player();
 
@@ -462,25 +552,25 @@ namespace TheAionProject
             GetContinueKey();
 
             //
-            // get traveler's name
+            // get player's name
             //
-            DisplayGamePlayScreen("Character Creation - Name", Text.InitializeMissionGetTravelerName(), ActionMenu.MissionIntro, "");
+            DisplayGamePlayScreen("Character Creation - Name", Text.InitializeMissionGetPlayerName(), ActionMenu.MissionIntro, "");
             DisplayInputBoxPrompt("Enter your name: ");
             player.Name = GetString();
 
             //
-            // get traveler's age
+            // get player's age
             //
-            DisplayGamePlayScreen("Character Creation - Age", Text.InitializeMissionGetTravelerAge(player.Name), ActionMenu.MissionIntro, "");
-            int gameTravelerAge;
+            DisplayGamePlayScreen("Character Creation - Age", Text.InitializeMissionGetPlayerAge(player.Name), ActionMenu.MissionIntro, "");
+            int gamePlayerAge;
 
-            GetInteger($"Enter your age {player.Name}: ", 0, 1000000, out gameTravelerAge);
-            player.Age = gameTravelerAge;
+            GetInteger($"Enter your age {player.Name}: ", 0, 1000000, out gamePlayerAge);
+            player.Age = gamePlayerAge;
 
             //
-            // get traveler's race
+            // get player's race
             //
-            DisplayGamePlayScreen("Character Creation - Class", Text.InitializeMissionGetTravelerRace(player), ActionMenu.MissionIntro, "");
+            DisplayGamePlayScreen("Character Creation - Class", Text.InitializeMissionGetPlayerClass(player), ActionMenu.MissionIntro, "");
             DisplayInputBoxPrompt($"Enter your Class {player.Name}: ");
             player.Class = GetClass();
 
@@ -492,9 +582,9 @@ namespace TheAionProject
             player.HomeTown = GetHomeTown();
 
             //
-            // echo the traveler's info
+            // echo the player's info
             //
-            DisplayGamePlayScreen("Character Creation - Complete", Text.InitializeMissionEchoTravelerInfo(player), ActionMenu.MissionIntro, "");
+            DisplayGamePlayScreen("Character Creation - Complete", Text.InitializeMissionEchoPlayerInfo(player), ActionMenu.MissionIntro, "");
             GetContinueKey();
 
             // 
@@ -503,6 +593,23 @@ namespace TheAionProject
             _viewStatus = ViewStatus.PlayingGame;
 
             return player;
+        }
+
+        public void Heal(Player player)
+        {
+            string TextBox = "";
+            if (player.Wallet >= 10)
+            {
+                player.Wallet -= 10;
+                player.HealthValue = player.MaxHealthValue;
+                TextBox = "You healed succesfully. \n Press any key to continue.";
+            }
+            else
+            {
+                TextBox = "You do not have sufficient funds.\n Press any key to continue.";
+            }
+            DisplayGamePlayScreen("Heal ", TextBox, ActionMenu.ReturnOnly, "");
+            Console.ReadKey();
         }
 
         public void DisplayCurrentLocation(Player player)
@@ -514,7 +621,7 @@ namespace TheAionProject
 
         public void DisplayPlayerInformation()
         {
-            DisplayGamePlayScreen("Player Information", Text.TravelerInfo(_gameTraveler), ActionMenu.PlayerInformation, "");
+            DisplayGamePlayScreen("Player Information", Text.TravelerInfo(_player), ActionMenu.PlayerInformation, "");
         }
 
         public void DisplayAllGameObjects(List<TheZlandProject.GameObject> listOfGameObjects)
@@ -532,7 +639,216 @@ namespace TheAionProject
             DisplayGamePlayScreen("All Locations: ", TravelBoxText, ActionMenu.ReturnOnly, "");
         }
 
-        public Player DisplayTravelMenu(Player player, List<GameLocation> places)
+        public void DisplayTalkTo(Player player, List<Character> ListOfNPC)
+        {
+            string TalkToMenuDisplay = "";
+
+            foreach (var item in ListOfNPC)
+            {
+                if (item.LocationValue == player.LocationValue)
+                    TalkToMenuDisplay += "Person: "+ item.Name + "\n";
+            }
+
+            bool validResponse = false;
+            string playerResponse = "";
+
+            List<string> potentialResponses = new List<string>();
+
+            foreach (var item in ListOfNPC)
+            {
+                potentialResponses.Add(item.Name);
+            }
+
+            while (validResponse == false)
+            {
+                Console.Clear();
+                DisplayGamePlayScreen("Talk To", TalkToMenuDisplay, ActionMenu.MainMenu, "");
+                DisplayInputBoxPrompt("Who would you like to talk to? ");
+                playerResponse = Console.ReadLine();
+
+                foreach (var item in potentialResponses)
+                {
+                    if (playerResponse == item)
+                        validResponse = true;
+                }
+
+                if (validResponse == false)
+                {
+                    DisplayInputErrorMessage("The NPC you specified does not exist.");
+                }
+            }
+
+            Merchant talkingToMerchant = new Merchant();
+            Civilian talkingToCivilian = new Civilian();
+            bool isTalkingToMerchant = false;
+
+            foreach (var item in ListOfNPC)
+            {
+                if (playerResponse == item.Name && item is Merchant)
+                {
+                    talkingToMerchant = item as Merchant;
+                    isTalkingToMerchant = true;
+                }
+                else if (playerResponse == item.Name && item is Civilian)
+                {
+                    talkingToCivilian = item as Civilian;
+                }
+                else
+                {
+
+                }
+            }
+
+            string greeting = "";
+
+            if (isTalkingToMerchant == true)
+            {
+                greeting = "Description: " + talkingToMerchant.Description + "\n\n" + talkingToMerchant.Name + ": " + talkingToMerchant.Speak();
+            }
+            else
+            {
+                greeting = "Description: " + talkingToCivilian.Description + "\n\n" + talkingToCivilian.Name + ": " + talkingToCivilian.Speak();
+            }
+
+            DisplayGamePlayScreen("Talk To", greeting + "\n\n\t Press any key to continue...", ActionMenu.MainMenu, "");
+            Console.ReadKey();
+
+            validResponse = false;
+            string userInput = "";
+
+            if (isTalkingToMerchant)
+            {
+                DisplayGamePlayScreen("Talk To", "Would you like to trade with " + talkingToMerchant.Name + "?", ActionMenu.Shop, "Use 1 for yes 7 for no.");
+                PlayerAction choice = new PlayerAction();
+                choice = GetActionMenuChoice(ActionMenu.Shop);
+
+                if (choice == PlayerAction.Trade)
+                {
+
+                string ListOfItems = "";
+                ListOfItems += "Sell to " + talkingToMerchant.Name + ": \n";
+                foreach (var item in player.Inventory)
+                {
+                    if (item.IsInInventory == true && item is Loot)
+                    {
+                        Loot stuff = item as Loot;
+                        ListOfItems += item.Name + ", ID: " + item.ID.ToString() + ", Price: $" + stuff.CashValue + "\n\n";
+                    }
+
+                }
+
+
+                    DisplayGamePlayScreen("Sell", ListOfItems, ActionMenu.MainMenu, "");
+                    DisplayInputBoxPrompt("What would you like to trade? (Enter ID): ");
+                    userInput = Console.ReadLine();
+                    int userChosenID = 0;
+                    int.TryParse(userInput, out userChosenID);
+
+                    foreach (var item in player.Inventory)
+                    {
+                        if (userChosenID == item.ID)
+                        {
+                            item.IsInInventory = false;
+                            Loot stuff = item as Loot;
+                            player.Wallet += stuff.CashValue;
+                        }
+                        else
+                        { }
+                    }
+                }
+                else if (choice == PlayerAction.Heal)
+                {
+                    Heal(player);
+                }
+            }
+
+        }
+              
+           public void Battle(Player player)
+        {
+            Enemy encounteredEnemy = new Enemy();
+
+            encounteredEnemy.AttackValue = 1;
+            encounteredEnemy.HealthValue = 10;
+
+            while(player.HealthValue >= 1 && encounteredEnemy.HealthValue >= 1)
+            {
+                player.HealthValue -= encounteredEnemy.AttackValue;
+                encounteredEnemy.HealthValue -= player.AttackValue;
+            }
+
+            string TravelBoxText = "";
+
+            bool playerIsAlive;
+
+            if (player.HealthValue >= 1)
+            {
+                TravelBoxText = "You encountered a band of zombies before you could depart on your travles. \n" +
+                                "You managed to defeat the enemy, but not unscathed. \n" +
+                                "You health: " + player.HealthValue + ".";
+                playerIsAlive = true;
+            }
+            else
+            {
+                TravelBoxText = "You were intercepted by a band of the dead, you died in combat.";
+                playerIsAlive = false;
+            }
+
+            TravelBoxText += "\n Press any Key to Continue...";
+
+            DisplayGamePlayScreen("Random Encounter", TravelBoxText, ActionMenu.MainMenu, "");
+            Console.ReadKey();
+
+            if(!playerIsAlive)
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.Beep(150, 100);
+                Console.WriteLine("             ;::::;");
+                Console.WriteLine("         ;:::::'   :;");
+                Console.Beep(152, 100);
+                Console.WriteLine("        ;:::::;     ;.");
+                Console.WriteLine("       ,:::::'       ;           OOO ");
+                Console.WriteLine("       ::::::;       ;          OOOOO ");
+                Console.Beep(154, 100);
+                Console.WriteLine("       ;:::::;       ;         OOOOOOOO");
+                Console.WriteLine("      ,;::::::;     ;'         / OOOOOOO");
+                Console.Beep(156, 100);
+                Console.WriteLine("    ;:::::::::`. ,,,;.        /  / DOOOOOO");
+                Console.WriteLine("  .';:::::::::::::::::;,     /  /     DOOOO");
+                Console.Beep(158, 100);
+                Console.WriteLine(" ,::::::;::::::;;;;::::;,   /  /        DOOO");
+                Console.WriteLine(" `::::::`'::::::;;;::::: ,#/  /          DOOO");
+                Console.Beep(159, 100);
+                Console.WriteLine(":`:::::::`;::::::;;::: ;::#  /            DOOO");
+                Console.WriteLine("::`:::::::`;:::::::: ;::::# /              DOO");
+                Console.WriteLine("`:`:::::::`;:::::: ;::::::#/               DOO");
+                Console.Beep(160, 100);
+                Console.WriteLine(" :::`:::::::`;; ;:::::::::##                OO");
+                Console.WriteLine(" ::::`:::::::`;::::::::;:::#                OO");
+                Console.WriteLine(" `:::::`::::::::::::;'`:;::#                O");
+                Console.Beep(160, 100);
+                Console.WriteLine("  `:::::`::::::::;' /  / `:#");
+                Console.WriteLine("   ::::::`:::::;'  /  /   `#");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.Beep(160, 2000);
+                Console.WriteLine("You perished in combat.");
+                Console.Beep(180, 2000);
+                Console.WriteLine("\n\n\t We all have to go sometime.");
+                Console.Beep(200, 2000);
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("\t\t Press any key to end the game...");
+                Console.ReadKey();
+
+                Environment.Exit(0);
+            }
+        }
+
+        public Player DisplayTravelMenu(Player player, List<GameLocation> places, List<Area> PlacesVisited, List<GameObject> ListOfGameObjects)
         {
 
             string TravelBoxText = "";
@@ -545,12 +861,16 @@ namespace TheAionProject
 
             bool validResponse = false;
 
+
+
             while (!validResponse)
             {
 
             DisplayGamePlayScreen("Travel", TravelBoxText, ActionMenu.MainMenu, "");
             DisplayInputBoxPrompt("Where would you like to go? ");
 
+                bool userHasStoryItem = false;
+                int validStoryItemID = 0;
 
                 string userInput = "";
                 userInput = GetString();
@@ -558,27 +878,141 @@ namespace TheAionProject
                 {
 
                     Enum.TryParse<Area>(userInput, out PlayerLocation);
-                    player.LocationValue = PlayerLocation;
-                    validResponse = true;
-                    return player;
+
+                    switch (PlayerLocation)
+                    {
+                        case Area.None:
+                            validStoryItemID = 0;
+                            break;
+                        case Area.Sanctuary:
+                            userHasStoryItem = true;
+                            break;
+                        case Area.Hope:
+                            validStoryItemID = 301;
+                            break;
+                        case Area.Desert:
+                            validStoryItemID = 300;
+                            break;
+                        case Area.TC:
+                            validStoryItemID = 302;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    foreach (var item in player.Inventory)
+                    {
+                        if (item.ID == validStoryItemID && item.IsInInventory)
+                            userHasStoryItem = true;
+                    }
+
+                    if (userHasStoryItem)
+                    {
+                        player.LocationValue = PlayerLocation;
+                        validResponse = true;
+                        player.Experience += 10;
+                        PlacesVisited.Add(PlayerLocation);
+
+                        GameObject placeHolder = new GameObject();
+
+                        foreach (var item in player.Inventory)
+                        {
+                            if (item.IsInInventory)
+                            {
+                                item.Location = PlayerLocation;
+                                placeHolder = item;
+                            
+
+                            foreach (var gameobject in ListOfGameObjects)
+                            {
+                                if(placeHolder.ID == gameobject.ID)
+                                {
+                                    gameobject.Location = player.LocationValue;
+                                }
+                            }
+                            }
+                        }
+
+                        return player;
+                    }
+                    else
+                    {
+                        DisplayInputErrorMessage("The place you are trying to go requires a story item you do not yet posess.");
+                        Console.ReadKey();
+                        break;
+                    }
 
                 }
 
                 else
                 {
-
-                }
+                    DisplayInputErrorMessage("The location specified does not exist.");
+                    Console.ReadKey();
+                    break;
+                        }
             }
 
             return player;            
 
         }
 
+        public bool ValidTravelLocation(Player player, Area playerLocation)
+        {
+
+            switch (playerLocation)
+            {
+                case Area.None:
+                    break;
+                case Area.Sanctuary:
+                    break;
+                case Area.Hope:
+                    try
+                    {
+                        foreach (var item in player.Inventory)
+                        {
+                            if (item.ID == 301)
+                                return true;
+                        }
+                    }
+                    catch
+                    { return false; }
+                    break;
+                case Area.Desert:
+                    try
+                    { 
+                    foreach (var item in player.Inventory)
+                    {
+                        if (item.ID == 300)
+                            return true;
+                    }
+                    }
+                    catch
+                    { return false; }
+                    break;
+                case Area.TC:
+                    try
+                    { 
+                    foreach (var item in player.Inventory)
+                    {
+                        if (item.ID == 302)
+                            return true;
+                    }
+                    }
+                    catch
+                    { return false; }
+                    break;
+                default:
+                    return false;
+            }
+
+            return false;
+        }
+
         public string DisplayListOfObjectsInArea(Player player, List<TheZlandProject.GameObject> listOfAllGameObjects)
         {
             string messageBox = "";
 
-            List<TheZlandProject.GameObject> listOfGameObjectsInArea = new List<TheZlandProject.GameObject>();
+            List<TheZlandProject.GameObject> listOfGameObjectsInArea = listOfAllGameObjects;
 
 
             messageBox += " ~~~~~ Weapons ~~~~~";
@@ -586,7 +1020,7 @@ namespace TheAionProject
             {
                 if (item is Weapon && item.Location == player.LocationValue)
                 {
-                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                    messageBox += "\n Name: " + item.Name + ", Location: " + item.Location + ", ID: " + item.ID + ", Is in your inventory: " + item.IsInInventory;
                 }
             }
 
@@ -595,7 +1029,7 @@ namespace TheAionProject
             {
                 if (item is Loot && item.Location == player.LocationValue)
                 {
-                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                    messageBox += "\n Name: " + item.Name + ", Location: " + item.Location + ", ID: " + item.ID + ", Is in your inventory: " + item.IsInInventory;
                 }
 
             }
@@ -605,7 +1039,7 @@ namespace TheAionProject
             {
                 if (item is StoryItem && item.Location == player.LocationValue)
                 {
-                    messageBox += "\n Name: " + item.Name + "\n Location: " + item.Location + "\n ID: " + item.ID + "\n Is in your inventory: " + item.IsInInventory;
+                    messageBox += "\n Name: " + item.Name + ", Location: " + item.Location + ", ID: " + item.ID + ", Is in your inventory: " + item.IsInInventory;
                 }
             }
 
@@ -693,6 +1127,49 @@ namespace TheAionProject
             return player;
         }
 
+        public void DisplayPlayerInventory(Player player)
+        {
+            string messageBox = "";
+
+            foreach (var item in player.Inventory)
+            {
+                if (item.IsInInventory)
+                {
+                    messageBox += "Name: " + item.Name + "\n";
+                    messageBox += "ID: " + item.ID + "\n";
+                }
+            }
+            DisplayGamePlayScreen("Player Inventory", messageBox, ActionMenu.ReturnOnly, "");
+        }
+        public void DisplayAllPlacesVisited(List<Area> PlacesVisited)
+        {
+            string messageBox = "";
+            int i = 0;
+            foreach (var item in PlacesVisited)
+            {
+                i++;
+                messageBox += i + ": " + item.ToString() + "\n";
+            }
+
+            DisplayGamePlayScreen("List of all visited locations in order", messageBox, ActionMenu.ReturnOnly, "");
+
+        }
+        public void DisplayAllNPC(List<Character> TheList)
+        {
+            string textBox = "";
+
+            foreach (var item in TheList)
+            {
+                textBox += "Name: " + item.Name + "\nLocation: " + item.LocationValue;
+            }
+            DisplayGamePlayScreen("List of All NPC", textBox, ActionMenu.ReturnOnly, "");
+        }
+
+        public void DisplayAdminMenu()
+        {
+            DisplayGamePlayScreen("Welcome Admin, what can we do for you?", "", ActionMenu.AdminMenu, "");
+        }
+
         public Player PickUpItem(Player player, List<TheZlandProject.GameObject> ListOfInGameObjects)
         {
             string playerInput = "";
@@ -731,6 +1208,7 @@ namespace TheAionProject
                 }
             }
 
+            player.Inventory = ListOfInGameObjects;
             return player;
         }
 
@@ -741,10 +1219,30 @@ namespace TheAionProject
             return player;
         }
 
+        public void LookAt(Player player, List<TheZlandProject.GameObject> ListOfInGameObjects)
+        {
+            DisplayGamePlayScreen("Look At", DisplayListOfObjectsInArea(player, ListOfInGameObjects), ActionMenu.LookAround, "");
+            int ID = 0;
+            GetInteger("What (ID) item would you like to look at?", 0, 10000, out ID);
+
+            string messageBox = "";
+
+            foreach (var item in ListOfInGameObjects)
+            {
+                if(ID == item.ID)
+                {
+                    messageBox += "Name: " + item.Name + "\nDescription: " + item.Description;
+                }
+            }
+            DisplayGamePlayScreen("Look At", messageBox, ActionMenu.ReturnOnly, "");
+
+
+        }
+
 
         public Player DisplayEditPlayer(Player player)
         {
-            DisplayGamePlayScreen("Edit Player Information: ", Text.TravelerInfo(_gameTraveler), ActionMenu.EditPlayer, "");
+            DisplayGamePlayScreen("Edit Player Information: ", Text.TravelerInfo(_player), ActionMenu.EditPlayer, "");
             
             PlayerAction PropertyToEdit = 0;
 
@@ -782,10 +1280,49 @@ namespace TheAionProject
         public void DisplayClosingScreen()
         {
             Console.Clear();
-            Console.Write("\n\n\n\t\t");
-            string message = Text.ClosingScreen();
-            Console.WriteLine(message);
-            GetContinueKey();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Beep(150, 100);
+            Console.WriteLine("             ;::::;");
+            Console.WriteLine("         ;:::::'   :;");
+            Console.Beep(152, 100);
+            Console.WriteLine("        ;:::::;     ;.");
+            Console.WriteLine("       ,:::::'       ;           OOO ");
+            Console.WriteLine("       ::::::;       ;          OOOOO ");
+            Console.Beep(154, 100);
+            Console.WriteLine("       ;:::::;       ;         OOOOOOOO");
+            Console.WriteLine("      ,;::::::;     ;'         / OOOOOOO");
+            Console.Beep(156, 100);
+            Console.WriteLine("    ;:::::::::`. ,,,;.        /  / DOOOOOO");
+            Console.WriteLine("  .';:::::::::::::::::;,     /  /     DOOOO");
+            Console.Beep(158, 100);
+            Console.WriteLine(" ,::::::;::::::;;;;::::;,   /  /        DOOO");
+            Console.WriteLine(" `::::::`'::::::;;;::::: ,#/  /          DOOO");
+            Console.Beep(159, 100);
+            Console.WriteLine(":`:::::::`;::::::;;::: ;::#  /            DOOO");
+            Console.WriteLine("::`:::::::`;:::::::: ;::::# /              DOO");
+            Console.WriteLine("`:`:::::::`;:::::: ;::::::#/               DOO");
+            Console.Beep(160, 100);
+            Console.WriteLine(" :::`:::::::`;; ;:::::::::##                OO");
+            Console.WriteLine(" ::::`:::::::`;::::::::;:::#                OO");
+            Console.WriteLine(" `:::::`::::::::::::;'`:;::#                O");
+            Console.Beep(160, 100);
+            Console.WriteLine("  `:::::`::::::::;' /  / `:#");
+            Console.WriteLine("   ::::::`:::::;'  /  /   `#");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Beep(160, 800);
+            Console.WriteLine("You decided to disband.");
+            Console.Beep(180, 800);
+            Console.WriteLine("\n\n\t We all have to go sometime.");
+            Console.Beep(200, 800);
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("\t\t Press any key to end the game...");
+            Console.ReadKey();
+
+            Environment.Exit(0);
         }
 
         #endregion

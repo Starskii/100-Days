@@ -84,6 +84,9 @@ namespace TheAionProject
             _gameConsoleView.DisplayGamePlayScreen("Game Introduction", Text.CharacterCreation(), ActionMenu.MissionIntro, "");
             _gameConsoleView.GetContinueKey();
             _playerCharacter.LocationValue = TheZlandProject.Models.Area.Sanctuary;
+            _playerCharacter.HealthValue = 10;
+            _playerCharacter.MaxHealthValue = 10;
+            _playerCharacter.AttackValue = 2;
 
             //
             // initialize the mission traveler
@@ -91,9 +94,12 @@ namespace TheAionProject
             InitializeMission();
             List<GameLocation> _listOfLocation = new List<GameLocation>();
             ListOfLocations Instantiate = new ListOfLocations();
+            List<Character> ListOfNPC = ListOfAllNPC.InstantiateNPCLIst();
             _listOfLocation = Instantiate.IntitializeGameLocationList();
             List<TheZlandProject.GameObject> listOfAllGameObjects = new List<TheZlandProject.GameObject>();
             listOfAllGameObjects = ListOfGameObjects.IntitializeGameObjectList();
+            _playerCharacter.Inventory = listOfAllGameObjects;
+            List<Area> ListOfPlacesVisited = new List<Area>();
 
             //
             // prepare game play screen
@@ -106,12 +112,15 @@ namespace TheAionProject
 
             travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.MainMenu);
 
+            Random playerRandomEncounter = new Random();
+
             while (_playingGame)
             {
                 //
                 // get next game action from player
-               
-
+                int randomBattle = 0;
+                randomBattle = playerRandomEncounter.Next(1, 101);
+                int probOfEncounter = 90;
                 //
                 // choose an action based on the player's menu choice
                 //
@@ -121,8 +130,36 @@ namespace TheAionProject
                         travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.MainMenu);
                         break;
 
+                    case PlayerAction.Heal:
+                        _gameConsoleView.Heal(_playerCharacter);
+                        travelerActionChoice = PlayerAction.Return;
+                        break;
+
+                    case PlayerAction.Act:
+                        _gameConsoleView.DisplayGamePlayScreen("Current Location: " + _playerCharacter.LocationValue, Text.CurrrentLocationInfo(_playerCharacter), ActionMenu.Act, "");
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.Act);
+                        break;
+
+                    case PlayerAction.Options:
+                        _gameConsoleView.DisplayGamePlayScreen("Current Location: " + _playerCharacter.LocationValue, Text.CurrrentLocationInfo(_playerCharacter), ActionMenu.OptionMenu, "");
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.OptionMenu);
+                        break;
+
                     case PlayerAction.Travel:
-                        _playerCharacter = _gameConsoleView.DisplayTravelMenu(_playerCharacter, _listOfLocation);
+                        if (randomBattle >= probOfEncounter)
+                        {
+                            _gameConsoleView.Battle(_playerCharacter);
+                            travelerActionChoice = PlayerAction.Return;
+                        }
+                        else
+                        {
+                            _playerCharacter = _gameConsoleView.DisplayTravelMenu(_playerCharacter, _listOfLocation, ListOfPlacesVisited, listOfAllGameObjects);
+                            travelerActionChoice = PlayerAction.Return;
+                        }
+                        break;
+
+                    case PlayerAction.TalkTo:
+                        _gameConsoleView.DisplayTalkTo(_playerCharacter, ListOfNPC);
                         travelerActionChoice = PlayerAction.Return;
                         break;
 
@@ -141,19 +178,43 @@ namespace TheAionProject
                         travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.LookAround);
                         break;
 
+                    case PlayerAction.LookAt:
+                        _gameConsoleView.LookAt(_playerCharacter, listOfAllGameObjects);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
+                        break;
+
                     case PlayerAction.PickUpItem:
                         _playerCharacter = _gameConsoleView.PickUpItem(_playerCharacter, listOfAllGameObjects);
-                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.LookAround);
-
+                        travelerActionChoice = PlayerAction.Return;
                         break;
 
                     case PlayerAction.PutDownItem:
                         _playerCharacter = _gameConsoleView.PutDownItem(_playerCharacter, listOfAllGameObjects);
-                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.LookAround);
+                        travelerActionChoice = PlayerAction.Return;
+                        break;
+
+                    case PlayerAction.AdminMenu:
+                        _gameConsoleView.DisplayAdminMenu();
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.AdminMenu);
                         break;
 
                     case PlayerAction.DisplayAllObjects:
                         _gameConsoleView.DisplayAllGameObjects(listOfAllGameObjects);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
+                        break;
+
+                    case PlayerAction.DisplayAllNPC:
+                        _gameConsoleView.DisplayAllNPC(ListOfNPC);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
+                        break;
+
+                    case PlayerAction.DisplayPlayerInventory:
+                        _gameConsoleView.DisplayPlayerInventory(_playerCharacter);
+                        travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
+                        break;
+
+                    case PlayerAction.DisplayLocationsVisited:
+                        _gameConsoleView.DisplayAllPlacesVisited(ListOfPlacesVisited);
                         travelerActionChoice = _gameConsoleView.GetActionMenuChoice(ActionMenu.ReturnOnly);
                         break;
 
@@ -188,7 +249,7 @@ namespace TheAionProject
         /// </summary>
         private void InitializeMission()
         {
-            Player player = _gameConsoleView.GetInitialTravelerInfo();
+            Player player = _gameConsoleView.GetInitialPlayerInfo();
 
             _playerCharacter.Name = player.Name;
             _playerCharacter.Age = player.Age;

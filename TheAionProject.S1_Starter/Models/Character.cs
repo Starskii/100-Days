@@ -30,6 +30,14 @@ namespace TheAionProject
         private Area _locationValue;
         private int _age;
         private ClassType _class;
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
 
         #endregion
 
